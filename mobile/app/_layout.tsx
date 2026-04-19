@@ -1,0 +1,19 @@
+import "react-native-gesture-handler";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "../src/providers/AuthProvider";
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: "#0a0a0b" },
+          headerTintColor: "#22c55e",
+          contentStyle: { backgroundColor: "#0a0a0b" },
+        }}
+      />
+    </AuthProvider>
+  );
+}

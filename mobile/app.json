@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Wattly",
+    "slug": "wattly",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "wattly",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0a0a0b"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.wattly.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0a0b"
+      },
+      "package": "app.wattly.mobile",
+      "usesCleartextTraffic": true
+    },
+    "plugins": ["expo-router"],
+    "extra": {
+      "apiUrl": "http://localhost:3000"
+    }
+  }
+}
