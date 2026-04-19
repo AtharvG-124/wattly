@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as mem from "@/lib/wattly/memoryStore";
-import { computeWasteScore, estimateCarbonGramsPerDay } from "@/lib/wattly/wasteScore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { computeWasteScore, estimateCarbonGramsPerDay } from "@/lib/iris/wasteScore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
 
 export const runtime = "nodejs";
 
 function allowSeed(req: NextRequest): boolean {
   if (process.env.SEED_PROTECTED !== "true") return true;
-  const key = process.env.WATTLY_DEVICE_API_KEY ?? "dev-secret-change-me";
+  const key = process.env.IRIS_DEVICE_API_KEY ?? process.env.WATTLY_DEVICE_API_KEY ?? "dev-secret-change-me";
   const sent = req.headers.get("x-api-key") ?? req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
   return sent === key;
 }
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     mem.addReading({
       user_id: userId,
-      device_id: "wattly-demo-device",
+      device_id: "iris-demo-device",
       room_id: "living-room",
       temperature,
       lightLevel,
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
 
     if (supabase) {
       supabaseRows.push({
-        device_id: "wattly-demo-device",
+        device_id: "iris-demo-device",
         user_id: userId,
         room_id: "living-room",
         temperature_c: temperature,
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
   if (supabase && supabaseRows.length > 0) {
     const { error: pErr } = await supabase.from("profiles").upsert({
       id: userId,
-      email: profile.email ?? "demo@wattly.app",
+      email: profile.email ?? "demo@iris.app",
       home_size_sqft: profile.home_size_sqft,
       num_rooms: profile.num_rooms,
       country: profile.country,
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       supabaseError = `profiles: ${pErr.message}`;
     } else {
       const { error: dErr } = await supabase.from("devices").upsert({
-        id: "wattly-demo-device",
+        id: "iris-demo-device",
         user_id: userId,
         room_id: "living-room",
         room_label: "Living Room",

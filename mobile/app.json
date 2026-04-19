@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "Wattly",
-    "slug": "wattly",
+    "name": "Iris",
+    "slug": "iris",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "wattly",
+    "scheme": "iris",
     "userInterfaceStyle": "dark",
     "splash": {
       "backgroundColor": "#0a0a0b"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.wattly.mobile"
+      "bundleIdentifier": "app.iris.mobile"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#0a0a0b"
       },
-      "package": "app.wattly.mobile",
+      "package": "app.iris.mobile",
       "usesCleartextTraffic": true
     },
     "plugins": ["expo-router"],

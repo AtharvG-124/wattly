@@ -9,7 +9,7 @@ function getSupabasePublishableKey(): string | undefined {
 
 /**
  * Refreshes the user session in middleware so auth cookies stay in sync.
- * Wattly stays usable without login — we do not redirect to /login here.
+ * Iris stays usable without login — we do not redirect to /login here.
  * To protect routes later, add checks after `getUser()` (see Supabase UI docs).
  */
 export async function updateSession(request: NextRequest) {

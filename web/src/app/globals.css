@@ -9,7 +9,7 @@
 }
 
 body {
-  @apply bg-wattly-dark text-zinc-100 antialiased min-h-screen;
+  @apply bg-iris-dark text-zinc-100 antialiased min-h-screen;
 }
 
 @layer base {

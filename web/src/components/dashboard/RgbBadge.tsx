@@ -22,7 +22,7 @@ export function RgbBadge({ wasteScore }: { wasteScore: number }) {
       />
       <div>
         <p className="text-sm font-medium text-white">{label}</p>
-        <p className="text-xs text-zinc-500">LED-style indicator (matches your Wattly device)</p>
+        <p className="text-xs text-zinc-500">LED-style indicator (matches your Iris device)</p>
       </div>
     </div>
   );

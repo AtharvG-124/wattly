@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export function WattlyLogo({ className }: { className?: string }) {
+export function IrisLogo({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden>
@@ -10,15 +10,10 @@ export function WattlyLogo({ className }: { className?: string }) {
           fill="#22c55e"
           opacity="0.9"
         />
-        <path
-          d="M10 22c2-1 4-2 8-2s6 1 8 2"
-          stroke="#22c55e"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
+        <path d="M10 22c2-1 4-2 8-2s6 1 8 2" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M12 14h2M22 14h2" stroke="#86efac" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
-      <span className="font-semibold text-xl tracking-tight">Wattly</span>
+      <span className="font-semibold text-xl tracking-tight">Iris</span>
     </div>
   );
 }

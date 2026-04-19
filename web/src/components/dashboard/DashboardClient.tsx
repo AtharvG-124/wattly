@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button";
 import { RgbBadge } from "./RgbBadge";
 import { RoomStatusCard } from "./RoomStatusCard";
 import { DashboardCharts, type ChartMetric } from "./DashboardCharts";
-import { WattlyLogo } from "@/components/WattlyLogo";
+import { IrisLogo } from "@/components/IrisLogo";
 import * as Switch from "@radix-ui/react-switch";
 
-const DEMO_KEY = "wattly_demo_mode";
+const DEMO_KEY = "iris_demo_mode";
 
 export function DashboardClient() {
   const [demoMode, setDemoMode] = useState(false);
@@ -52,7 +52,7 @@ export function DashboardClient() {
     try {
       const [l, h, s] = await Promise.all([
         fetchLatest(),
-        fetchHistory(range),
+        fetchHistory("30d"),
         fetchStatsSummary(),
       ]);
       setLatest(l);
@@ -64,7 +64,7 @@ export function DashboardClient() {
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Could not reach API");
     }
-  }, [demoMode, range]);
+  }, [demoMode]);
 
   useEffect(() => {
     if (demoMode) {
@@ -86,10 +86,6 @@ export function DashboardClient() {
     return () => clearInterval(id);
   }, [demoMode, loadApi]);
 
-  useEffect(() => {
-    if (!demoMode) void loadApi();
-  }, [range, demoMode, loadApi]);
-
   const co2dayKg = useMemo(() => {
     if (!latest) return 0;
     return Math.round((latest.carbonGramsEst / 1000) * 100) / 100;
@@ -104,6 +100,11 @@ export function DashboardClient() {
     const map = new Map<string, DailyAvg>();
     for (const h of history) {
       const d = new Date(h.recordedAt);
+      if (!Number.isFinite(d.getTime())) continue;
+      const temperature = toFiniteNumber(h.temperature);
+      const lightLevel = toFiniteNumber(h.lightLevel);
+      const soundLevel = toFiniteNumber(h.soundLevel);
+      if (temperature == null || lightLevel == null || soundLevel == null) continue;
       const key = dayKey(d);
       const cur = map.get(key) ?? {
         dateKey: key,
@@ -114,9 +115,9 @@ export function DashboardClient() {
         motionCount: 0,
       };
       cur.count += 1;
-      cur.temperature += h.temperature;
-      cur.lightLevel += h.lightLevel;
-      cur.soundLevel += h.soundLevel;
+      cur.temperature += temperature;
+      cur.lightLevel += lightLevel;
+      cur.soundLevel += soundLevel;
       cur.motionCount += h.motionDetected ? 1 : 0;
       map.set(key, cur);
     }
@@ -163,13 +164,13 @@ export function DashboardClient() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
       <header className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <WattlyLogo />
+        <IrisLogo />
         <div className="flex flex-wrap items-center gap-4">
           <label className="flex items-center gap-2 text-sm text-zinc-400">
             <Switch.Root
               checked={demoMode}
               onCheckedChange={toggleDemo}
-              className="w-11 h-6 bg-zinc-700 rounded-full relative data-[state=checked]:bg-wattly-green outline-none"
+              className="w-11 h-6 bg-zinc-700 rounded-full relative data-[state=checked]:bg-iris-green outline-none"
             >
               <Switch.Thumb className="block w-5 h-5 bg-white rounded-full translate-x-0.5 transition-transform data-[state=checked]:translate-x-5" />
             </Switch.Root>
@@ -182,7 +183,7 @@ export function DashboardClient() {
           )}
           <Link
             href="/onboarding"
-            className="rounded-xl border border-wattly-green/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200 hover:bg-emerald-500/20 transition"
+            className="rounded-xl border border-iris-green/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200 hover:bg-emerald-500/20 transition"
           >
             Home profile
           </Link>
@@ -197,16 +198,16 @@ export function DashboardClient() {
 
       {err && (
         <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-amber-100 text-sm">
-          {err} — Run <code className="text-white">cd wattly/web && npm run dev</code> or turn on Demo mode.
+          {err} — Run <code className="text-white">cd web && npm run dev</code> or turn on Demo mode.
         </div>
       )}
 
-      <Card className="relative overflow-hidden border-wattly-green/30 bg-gradient-to-br from-emerald-950/50 via-zinc-950 to-zinc-900 shadow-xl shadow-emerald-500/10">
+      <Card className="relative overflow-hidden border-iris-green/30 bg-gradient-to-br from-emerald-950/50 via-zinc-950 to-zinc-900 shadow-xl shadow-emerald-500/10">
         <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-emerald-400/20 blur-3xl" />
         <div className="pointer-events-none absolute -left-20 bottom-0 h-44 w-44 rounded-full bg-teal-400/10 blur-3xl" />
         <div className="relative grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80">Wattly Dashboard</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80">Iris Dashboard</p>
             <CardTitle className="mt-2 text-2xl sm:text-3xl">See energy behavior in real time</CardTitle>
             <CardDescription className="mt-3 max-w-2xl text-zinc-300">
               Demo mode now includes realistic multi-day data points so the calendar and daily averages look fully
@@ -229,7 +230,7 @@ export function DashboardClient() {
       </Card>
 
       {alert && !demoMode && (
-        <div className="rounded-2xl border border-wattly-green/30 bg-emerald-500/10 px-4 py-3 text-emerald-100 text-sm">
+        <div className="rounded-2xl border border-iris-green/30 bg-emerald-500/10 px-4 py-3 text-emerald-100 text-sm">
           {alert}
         </div>
       )}
@@ -247,12 +248,12 @@ export function DashboardClient() {
         <Card className="border-white/10 bg-zinc-950/70">
           <CardTitle>Carbon footprint</CardTitle>
           <CardDescription>Estimated from your usage patterns & home profile</CardDescription>
-          <p className="mt-4 text-3xl font-semibold text-wattly-green">{latest ? `~${co2dayKg} kg` : "--"}</p>
+          <p className="mt-4 text-3xl font-semibold text-iris-green">{latest ? `~${co2dayKg} kg` : "--"}</p>
           <p className="text-sm text-zinc-500 mt-1">CO₂ per day (rough, educational)</p>
           {stats && (
             <p className="mt-4 text-sm text-zinc-300 leading-relaxed">
               This week vs last: you may have avoided about{" "}
-              <span className="text-wattly-green font-medium">{stats.savedCo2KgVsLastWeek} kg</span> CO₂ if your
+              <span className="text-iris-green font-medium">{stats.savedCo2KgVsLastWeek} kg</span> CO₂ if your
               score improved.
             </p>
           )}
@@ -357,7 +358,7 @@ export function DashboardClient() {
             type="button"
             onClick={() => setRange(r)}
             className={`rounded-xl px-4 py-2 text-sm transition ${
-              range === r ? "bg-wattly-green text-wattly-dark font-medium" : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+              range === r ? "bg-iris-green text-iris-dark font-medium" : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
             }`}
           >
             {r}
@@ -365,7 +366,7 @@ export function DashboardClient() {
         ))}
       </div>
 
-      <DashboardCharts history={chartHistory} range={range} activeMetric={activeMetric} />
+      <DashboardCharts history={chartHistory} range={range} activeMetric={activeMetric} demoMode={demoMode} />
 
       {stats && (
         <Card className="border-white/10 bg-zinc-950/70">
@@ -491,7 +492,7 @@ function CalendarGrid({
               onClick={() => onSelectDay(cell.key)}
               className={`rounded-lg px-2 py-2 text-sm text-left border transition ${
                 selectedDay === cell.key
-                  ? "border-wattly-green bg-emerald-500/20 text-white"
+                  ? "border-iris-green bg-emerald-500/20 text-white"
                   : daysWithData.has(cell.key)
                     ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
                     : "border-white/10 bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
@@ -525,4 +526,15 @@ function buildDemoHistory(days = 30): HistoryPoint[] {
     }
   }
   return rows.sort((a, b) => +new Date(a.recordedAt) - +new Date(b.recordedAt));
+}
+
+function toFiniteNumber(value: unknown): number | null {
+  const n =
+    typeof value === "number"
+      ? value
+      : typeof value === "string"
+        ? Number.parseFloat(value)
+        : Number.NaN;
+  if (!Number.isFinite(n)) return null;
+  return n;
 }

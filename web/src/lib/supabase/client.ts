@@ -9,7 +9,7 @@ function getSupabasePublishableKey(): string | undefined {
 
 /**
  * Browser Supabase client — use in Client Components.
- * Returns `null` when env is missing so Wattly can run in API-only / demo mode.
+ * Returns `null` when env is missing so Iris can run in API-only / demo mode.
  */
 export function createClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -18,5 +18,5 @@ export function createClient() {
   return createBrowserClient(url, key);
 }
 
-/** @deprecated Use `createClient()` — alias for older Wattly imports */
+/** @deprecated Use `createClient()` — alias for older Iris imports */
 export const createSupabaseBrowserClient = createClient;

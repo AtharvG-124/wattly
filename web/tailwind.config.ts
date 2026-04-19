@@ -6,7 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        wattly: {
+        iris: {
           green: "#22c55e",
           dark: "#0a0a0b",
           card: "#141416",

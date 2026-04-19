@@ -46,7 +46,7 @@ export default function HomeScreen() {
         />
       }
     >
-      <Text style={styles.title}>Wattly</Text>
+      <Text style={styles.title}>Iris</Text>
       <Text style={styles.sub}>Live from your home sensors</Text>
 
       {!authLoading && (

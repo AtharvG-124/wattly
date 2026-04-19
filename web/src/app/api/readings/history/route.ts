@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as mem from "@/lib/wattly/memoryStore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
 
 export const runtime = "nodejs";
 
@@ -64,8 +64,9 @@ export async function GET(req: NextRequest) {
       .eq("user_id", userId)
       .gte("recorded_at", since.toISOString())
       .order("recorded_at", { ascending: true });
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json((data ?? []).map((row) => mapRow(row as Record<string, unknown>)));
+    if (!error && (data?.length ?? 0) > 0) {
+      return NextResponse.json((data ?? []).map((row) => mapRow(row as Record<string, unknown>)));
+    }
   }
 
   const rows = mem.listReadings(userId, since).reverse();

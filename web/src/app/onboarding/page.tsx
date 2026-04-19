@@ -39,7 +39,7 @@ export default function OnboardingPage() {
       >
         Back to dashboard
       </Link>
-      <Card className="relative overflow-hidden border-wattly-green/30 bg-gradient-to-br from-emerald-950/50 via-zinc-950 to-zinc-900">
+      <Card className="relative overflow-hidden border-iris-green/30 bg-gradient-to-br from-emerald-950/50 via-zinc-950 to-zinc-900">
         <div className="pointer-events-none absolute -right-16 -top-10 h-44 w-44 rounded-full bg-emerald-400/20 blur-3xl" />
         <div className="relative">
           <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80">Personalization</p>
@@ -79,7 +79,7 @@ export default function OnboardingPage() {
               type="number"
             />
             {msg && <p className="text-sm text-emerald-300 rounded-lg border border-emerald-500/25 bg-emerald-500/5 px-3 py-2">{msg}</p>}
-            <Button type="submit" className="!bg-wattly-green !text-wattly-dark hover:!bg-emerald-300">
+            <Button type="submit" className="!bg-iris-green !text-iris-dark hover:!bg-emerald-300">
               Save profile
             </Button>
           </form>

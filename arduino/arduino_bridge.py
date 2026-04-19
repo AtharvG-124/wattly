@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-Wattly Arduino USB serial bridge
+Iris Arduino USB serial bridge
 Reads lines from Arduino in the format:
   TEMP:23.4,LIGHT:512,SOUND:1,MOTION:0
-and POSTs JSON to the Wattly API (local or deployed).
+and POSTs JSON to the Iris API (local or deployed).
 
 Usage:
   pip install pyserial requests
-  export WATTLY_API_URL=http://localhost:3000
-  export WATTLY_API_KEY=dev-secret-change-me
+  export IRIS_API_URL=http://localhost:3000
+  export IRIS_API_KEY=dev-secret-change-me
   python arduino_bridge.py --port /dev/tty.usbmodem1101
 """
+
 
 from __future__ import annotations
 
@@ -49,17 +50,24 @@ def parse_line(line: str) -> Optional[Dict[str, Any]]:
         "motionDetected": m.group("motion") == "1",
     }
 
+def print_fields(payload: Dict[str, Any]) -> None:
+    print("[sensor]")
+    print(f"  temp: {payload['temperature']} C")
+    print(f"  light: {payload['lightLevel']}")
+    print(f"  sound: {payload['soundLevel']}")
+    print(f"  motion: {'yes' if payload['motionDetected'] else 'no'}")
+
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Wattly serial → HTTP bridge")
+    parser = argparse.ArgumentParser(description="Iris serial -> HTTP bridge")
     parser.add_argument("--port", required=True, help="Serial port, e.g. /dev/tty.usbmodem1101 or COM3")
     parser.add_argument("--baud", type=int, default=9600)
     parser.add_argument(
         "--api-url",
         default=None,
-        help="Override WATTLY_API_URL (default http://localhost:3000 — Next.js dev server)",
+        help="Override IRIS_API_URL (default http://localhost:3000 - Next.js dev server)",
     )
-    parser.add_argument("--device-id", default="wattly-demo-device")
+    parser.add_argument("--device-id", default="iris-demo-device")
     parser.add_argument("--room-id", default="living-room")
     parser.add_argument("--interval", type=float, default=5.0, help="Min seconds between POSTs")
     args = parser.parse_args()
@@ -73,8 +81,8 @@ def main() -> None:
 
     import os
 
-    base = (args.api_url or os.environ.get("WATTLY_API_URL") or "http://localhost:3000").rstrip("/")
-    api_key = os.environ.get("WATTLY_API_KEY", "dev-secret-change-me")
+    base = (args.api_url or os.environ.get("IRIS_API_URL") or os.environ.get("WATTLY_API_URL") or "http://localhost:3000").rstrip("/")
+    api_key = os.environ.get("IRIS_API_KEY", os.environ.get("WATTLY_API_KEY", "dev-secret-change-me"))
 
     url = f"{base}/api/sensor-data"
     headers = {"Content-Type": "application/json", "x-api-key": api_key}
@@ -98,6 +106,7 @@ def main() -> None:
             if not payload:
                 print(f"[skip] {text.strip()}")
                 continue
+            print_fields(payload)
             payload["deviceId"] = args.device_id
             payload["roomId"] = args.room_id
             now = time.time()

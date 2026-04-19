@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as mem from "@/lib/wattly/memoryStore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
 
 export const runtime = "nodejs";
 

@@ -1,5 +1,5 @@
 /*
-  Wattly sensor hub (Arduino UNO) — placeholder sketch
+  Iris sensor hub (Arduino UNO) — placeholder sketch
   -----------------------------------------------
   Wire:
     - Thermistor divider → A0 (calibrate mapping in code)

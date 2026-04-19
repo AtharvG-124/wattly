@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as mem from "@/lib/wattly/memoryStore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
 
 export const runtime = "nodejs";
 
@@ -50,8 +50,7 @@ export async function GET(req: NextRequest) {
       .order("recorded_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    if (data) {
+    if (!error && data) {
       return NextResponse.json(mapRow(data as Record<string, unknown>));
     }
   }

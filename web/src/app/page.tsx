@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { WattlyLogo } from "@/components/WattlyLogo";
+import { IrisLogo } from "@/components/IrisLogo";
 import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
-      <WattlyLogo className="mb-10" />
+      <IrisLogo className="mb-10" />
       <h1 className="text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
         Feel good about the energy your home uses
       </h1>
       <p className="mt-6 text-lg text-zinc-400 max-w-xl leading-relaxed">
-        Wattly turns simple sensors into a clear picture of waste — lights left on, rooms overheating, and the
+        Iris turns simple sensors into a clear picture of waste — lights left on, rooms overheating, and the
         carbon footprint that comes with it. No jargon, just helpful nudges.
       </p>
       <div className="mt-10 flex flex-wrap gap-4 justify-center">

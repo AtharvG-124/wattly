@@ -1,5 +1,5 @@
 /**
- * Wattly web — calls Next.js Route Handlers under /api/* (same origin by default).
+ * Iris web — calls Next.js Route Handlers under /api/* (same origin by default).
  * Set NEXT_PUBLIC_API_URL only if the UI is hosted separately from the API.
  */
 

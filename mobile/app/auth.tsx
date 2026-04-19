@@ -70,7 +70,7 @@ export default function AuthScreen() {
       style={styles.container}
     >
       <Stack.Screen options={{ title: "Account" }} />
-      <Text style={styles.title}>Wattly account</Text>
+      <Text style={styles.title}>Iris account</Text>
       <Text style={styles.sub}>Same Supabase project as the web app.</Text>
 
       <TextInput

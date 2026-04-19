@@ -30,7 +30,7 @@ export default function SettingsPage() {
           <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/80">Automation</p>
           <CardTitle className="mt-2 text-3xl">Alerts & thresholds</CardTitle>
           <CardDescription className="mt-2 max-w-2xl text-zinc-300">
-            Control when Wattly flags avoidable waste patterns. These values are stored locally for now and can be wired
+            Control when Iris flags avoidable waste patterns. These values are stored locally for now and can be wired
             to `/api/settings` later.
           </CardDescription>
         </div>
@@ -65,9 +65,9 @@ export default function SettingsPage() {
             />
             <Button
               type="button"
-              className="!bg-wattly-green !text-wattly-dark hover:!bg-emerald-300"
+              className="!bg-iris-green !text-iris-dark hover:!bg-emerald-300"
               onClick={() => {
-                localStorage.setItem("wattly_thresholds", JSON.stringify({ temp, light, noise, motionMins }));
+                localStorage.setItem("iris_thresholds", JSON.stringify({ temp, light, noise, motionMins }));
               }}
             >
               Save thresholds

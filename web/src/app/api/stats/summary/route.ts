@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as mem from "@/lib/wattly/memoryStore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
 
 export const runtime = "nodejs";
 
@@ -46,8 +46,18 @@ export async function GET(req: NextRequest) {
       .select("waste_score, carbon_grams_est, recorded_at")
       .eq("user_id", userId)
       .gte("recorded_at", twoWeeksAgo.toISOString());
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    computeFromRows(data ?? []);
+    if (!error && (data?.length ?? 0) > 0) {
+      computeFromRows(data ?? []);
+    } else {
+      const rows = mem.listReadings(userId, twoWeeksAgo);
+      computeFromRows(
+        rows.map((r) => ({
+          waste_score: r.waste_score,
+          carbon_grams_est: r.carbon_grams_est,
+          recorded_at: r.recorded_at,
+        }))
+      );
+    }
   } else {
     const rows = mem.listReadings(userId, twoWeeksAgo);
     computeFromRows(

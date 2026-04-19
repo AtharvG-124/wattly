@@ -34,7 +34,7 @@ export function seedDemoUser(userId: string) {
   if (!profiles.has(userId)) {
     profiles.set(userId, {
       id: userId,
-      email: "demo@wattly.app",
+      email: "demo@iris.app",
       home_size_sqft: 1800,
       num_rooms: 4,
       country: "US",
@@ -42,7 +42,7 @@ export function seedDemoUser(userId: string) {
       grid_carbon_g_per_kwh: 386,
     });
   }
-  const devId = "wattly-demo-device";
+  const devId = "iris-demo-device";
   devices.set(devId, { user_id: userId, room_id: "living-room", room_label: "Living Room" });
 }
 

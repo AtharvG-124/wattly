@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { computeWasteScore, estimateCarbonGramsPerDay } from "@/lib/wattly/wasteScore";
-import { getSupabaseAdmin } from "@/lib/wattly/supabaseAdmin";
-import * as mem from "@/lib/wattly/memoryStore";
-import { minutesSinceMotion } from "@/lib/wattly/presence";
-import type { SensorPayload } from "@/lib/wattly/types";
+import { computeWasteScore, estimateCarbonGramsPerDay } from "@/lib/iris/wasteScore";
+import { getSupabaseAdmin } from "@/lib/iris/supabaseAdmin";
+import * as mem from "@/lib/iris/memoryStore";
+import { minutesSinceMotion } from "@/lib/iris/presence";
+import type { SensorPayload } from "@/lib/iris/types";
 
 export const runtime = "nodejs";
 
@@ -15,7 +15,7 @@ const DEFAULT_SETTINGS = {
 };
 
 function authDevice(req: NextRequest): boolean {
-  const key = process.env.WATTLY_DEVICE_API_KEY ?? "dev-secret-change-me";
+  const key = process.env.IRIS_DEVICE_API_KEY ?? process.env.WATTLY_DEVICE_API_KEY ?? "dev-secret-change-me";
   const header = req.headers.get("x-api-key");
   const auth = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
   const sent = header ?? auth;
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     soundLevel,
     motionDetected,
     roomId = "living-room",
-    deviceId = "wattly-demo-device",
+    deviceId = "iris-demo-device",
     timestamp,
   } = body;
 
@@ -85,6 +85,16 @@ export async function POST(req: NextRequest) {
   });
 
   const recordedAt = timestamp ? new Date(timestamp).toISOString() : new Date().toISOString();
+
+  console.log("[iris:sensor-data] incoming reading", {
+    temperature,
+    lightLevel,
+    soundLevel,
+    motionDetected,
+    roomId,
+    deviceId,
+    recordedAt,
+  });
 
   if (supabase) {
     void (async () => {

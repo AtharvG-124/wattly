@@ -1,4 +1,4 @@
--- Wattly — Supabase / Postgres schema
+-- Iris — Supabase / Postgres schema
 -- Run in SQL editor after creating project, or via supabase db push
 
 -- Profiles (1:1 with auth.users) — onboarding & carbon calibration

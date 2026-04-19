@@ -19,7 +19,7 @@ function friendlyFetchError(e: unknown): Error {
   const raw = e instanceof Error ? e.message : String(e);
   if (/Network request failed|Failed to fetch|network error/i.test(raw)) {
     return new Error(
-      "Cannot reach Wattly. On a phone, use your computer's LAN IP + port 3000, e.g. http://192.168.1.5:3000. Run Next.js: cd wattly/web && npm run dev. Then restart Expo: npx expo start --clear"
+      "Cannot reach Iris. On a phone, use your computer's LAN IP + port 3000, e.g. http://192.168.1.5:3000. Run Next.js: cd web && npm run dev. Then restart Expo: npx expo start --clear"
     );
   }
   return e instanceof Error ? e : new Error(raw);
